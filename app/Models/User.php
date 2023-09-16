@@ -45,4 +45,9 @@ class User extends Authenticatable
     public function notifications(){
         return $this->hasMany(Notification::class);
     }
+    public function unreadNotificationsCount($id)
+    {
+     return Notification::whereNull('read_at')->where('notifiable_id', $id)->count();
+    }
+
 }
