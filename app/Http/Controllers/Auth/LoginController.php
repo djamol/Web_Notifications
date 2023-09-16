@@ -27,6 +27,11 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
+    protected function authenticated(Request $request, $user)
+    {
+        // Store the user's ID in a cookie
+        Cookie::queue('user_id', $user->id, 60 * 5 ); // 5 hours
+    }
 
     /**
      * Create a new controller instance.
