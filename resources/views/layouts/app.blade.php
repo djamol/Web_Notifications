@@ -43,7 +43,12 @@
                             </div>
                         </li>
                     @endif
+                    <ul class="navbar-nav me-auto">
                     </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('notifications.create') }}"><img src="/assets/images/new.svg" alt="Notification" width="33px"></a>
+                    </li>
+                </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">

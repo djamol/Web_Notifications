@@ -36,7 +36,9 @@ class UserController extends Controller
             'phone_number' =>  ['nullable', 'numeric', 'string', 'regex:/^\+[1-9]\d{1,14}$/'],
         ]);
         $user->email = $request->email;
+        if($this->verifyPhone($request->phone_number)){
         $user->phone_number = $request->phone_number;
+        }
         $user->save();
 
         // Redirect
@@ -49,5 +51,17 @@ class UserController extends Controller
        return response()->json($filter);
 
     }
+    public function verifyPhone($phone_number){
+        // Initialize MessageBird client
+        $client = new Client(config('services.messagebird.api_key'));
+        try {
+            $lookup = $client->lookup->read($phoneNumber);
+            $isValid = $lookup->getType() === 'mobile';
+            if($isValid)
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+        return false;
 
 }
