@@ -7,12 +7,12 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Notification') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/fontawesome.min.css" />
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -29,8 +29,18 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
+                    @if(auth()->check())
                     <ul class="navbar-nav me-auto">
-
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                              List
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('notifications.index') }}">Notifications List</a>
+                            <a class="dropdown-item" href="{{ route('users.index') }}">Users List</a>
+                            </div>
+                        </li>
+                    @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -55,6 +65,8 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('home') }}">Home</a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -64,8 +76,19 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
+
                                 </div>
                             </li>
+                            <li class="nav-item"><a  href="{{route('notifications.index') }}" style="position: relative;">
+
+                              <img src="/assets/images/message.png" alt="Notification" width="36px" height="36px" style="position: relative;">
+                              <div class="fs-4" style="position: absolute;top: -15px;right: -6px;font-weight: bold; color: #781a1a;">
+                                @if(auth()->check())
+                                {{ $unread = auth()->user()->unreadNotificationsCount($user_id) }}
+                            @else
+                                {{ $unread = 0 }}
+                            @endif</div>
+                            </a></li>
                         @endguest
                     </ul>
                 </div>
