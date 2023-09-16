@@ -66,6 +66,8 @@
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('home') }}">Home</a>
+                                    <a class="dropdown-item" href="{{ env('APP_URL','') }}/users/{{ $user_id }}">Profile Info</a>
+                                    <a class="dropdown-item" href="{{ env('APP_URL','') }}/users/{{ $user_id }}/edit">Edit Profile</a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
