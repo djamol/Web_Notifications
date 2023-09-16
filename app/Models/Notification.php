@@ -14,4 +14,8 @@ class Notification extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function isExpired()
+    {
+        return now()->greaterThanOrEqualTo($this->expiration);
+    }
 }
