@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Log;
 
 class User extends Authenticatable
 {
@@ -49,5 +50,9 @@ class User extends Authenticatable
     {
      return Notification::whereNull('read_at')->where('notifiable_id', $id)->count();
     }
-
+    public function notificationOnScreen($id)
+    {
+     $status =$this->select('notification_switch')->where('id',$id)->first()->notification_switch;
+     return $status==1?true:false;
+    }
 }

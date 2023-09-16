@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Log;
+use MessageBird\Client as MessageBirdClient;
 
 class UserController extends Controller
 {
@@ -36,6 +37,7 @@ class UserController extends Controller
             'phone_number' =>  ['nullable', 'numeric', 'string', 'regex:/^\+[1-9]\d{1,14}$/'],
         ]);
         $user->email = $request->email;
+            $user->notification_switch = ($request->notification_switch=='on')?1:0;;
         if($this->verifyPhone($request->phone_number)){
         $user->phone_number = $request->phone_number;
         }
@@ -53,7 +55,7 @@ class UserController extends Controller
     }
     public function verifyPhone($phone_number){
         // Initialize MessageBird client
-        $client = new Client(config('services.messagebird.api_key'));
+        $client = new MessageBirdClient(config('services.messagebird.api_key'));
         try {
             $lookup = $client->lookup->read($phoneNumber);
             $isValid = $lookup->getType() === 'mobile';

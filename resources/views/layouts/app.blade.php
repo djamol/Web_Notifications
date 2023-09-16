@@ -88,6 +88,7 @@
 
                                 </div>
                             </li>
+                            @if( auth()->user()->notificationOnScreen($user_id) )
                             <li class="nav-item"><a  href="{{route('notifications.me') }}" style="position: relative;">
 
                               <img src="/assets/images/message.png" alt="Notification" width="36px" height="36px" style="position: relative;">
@@ -97,7 +98,9 @@
                             @else
                                 {{ $unread = 0 }}
                             @endif</div>
-                            </a></li>
+                            </a>
+                        </li>
+                        @endif
                         @endguest
                     </ul>
                 </div>
