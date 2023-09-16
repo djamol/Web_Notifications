@@ -12,5 +12,11 @@ class NotificationController extends Controller
         $notifications = Notification::all();
         return view('notifications.index', compact('notifications'));
     }
+    public function show(Notification $notification)
+    {
+         $notification->markAsRead($notification->id);
+        return view('notifications.show', compact('notification'));
+    }
+
 
 }

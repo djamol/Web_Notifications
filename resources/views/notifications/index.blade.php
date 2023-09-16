@@ -27,6 +27,7 @@
                                 <td>{{ $notification->expiration }}</td>
                                 <td>{{ $notification->destination }}</td>
                                 <td>
+                                    <a href="{{ route('notifications.show', $notification->id) }}" class="btn btn-info">View</a>
                                 </td>
                             </tr>
                             @endif
