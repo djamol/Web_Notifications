@@ -16,13 +16,20 @@ use App\Http\Controllers\NotificationController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $user = auth()->user();
+    // Check if a user is logged in
+       if ($user) {
+           return view('welcome', ['userName' => $user->name]);
+       }
+       return view('welcome', ['userName' => 'Guest']);
+   });
+
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::middleware(['auth'])->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 });
 
