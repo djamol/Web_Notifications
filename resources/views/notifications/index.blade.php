@@ -5,7 +5,17 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Notification List</div>
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Notification List</span>
+                        <div class="input-group">
+                            <input type="text" id="search" class="form-control" placeholder="Search...">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" id="searchButton">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="card-body">
                     <table class="table">
@@ -18,20 +28,8 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($notifications as $notification)
-                            @if (!$notification->isExpired())
-                            <tr @if ( !$notification->read_at && $notification->notifiable_id === auth()->id()) class="table-primary" @endif>
-                                <td>{{ $notification->type }}</td>
-                                <td>{{ $notification->short_text }}</td>
-                                <td>{{ $notification->expiration }}</td>
-                                <td>{{ $notification->destination }}</td>
-                                <td>
-                                    <a href="{{ route('notifications.show', $notification->id) }}" class="btn btn-info">View</a>
-                                </td>
-                            </tr>
-                            @endif
-                            @endforeach
+                        <tbody id="notificationTable">
+                            <!-- Filtered notifications will be displayed here -->
                         </tbody>
                     </table>
                 </div>
@@ -39,4 +37,44 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#searchButton').click(function () {
+            search();
+        });
+        search();
+        function search(){
+            var searchValue = $('#search').val();
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('get_notification') }}', // Change to your search route
+                data: { search: searchValue },
+                success: function (data) {
+                    // Replace the content of the notification table with the filtered data
+                    $('#notificationTable').empty();
+                    $.each(data, function (index, notification) {
+                        var row = '<tr>';
+                        row += '<td>' + notification.type + '</td>';
+                        row += '<td>' + notification.short_text + '</td>';
+                        row += '<td>' + notification.expiration + '</td>';
+                        row += '<td>' + notification.destination + '</td>';
+                        row += '<td>';
+                        row += '<a href="/notifications/'+notification.id+'" class="btn btn-info">View</a>';
+                        row += '</td>';
+                        row += '</tr>';
+
+                        $('#notificationTable').append(row);
+                    });
+                },
+                error: function () {
+                    alert('Error fetching data.');
+                }
+            });
+        }
+
+        });
+</script>
+
 @endsection

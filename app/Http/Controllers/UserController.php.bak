@@ -31,23 +31,29 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
+        // Validate the form data
         $this->validate($request, [
             'email' => 'required|email',
             'phone_number' =>  ['nullable', 'numeric', 'string', 'regex:/^\+[1-9]\d{1,14}$/'],
         ]);
+        // Update the user's settings
         $user->email = $request->email;
+        if($this->verifyPhone($request->phone_number)){
         $user->phone_number = $request->phone_number;
+        }
         $user->save();
 
         // Redirect
         return redirect()->route('users.index')->with('success', 'User settings updated successfully.');
     }
-    public function getUsers(Request $request)
-    {
-        $search = $request->input('search');
-        $filter = User::select('name','email',)::where('name', 'like', '%' . $search . '%')->get();
-       return response()->json($filter);
-
+    public function verifyPhone($phone_number){
+    // Initialize MessageBird client
+    $messageBird = new Client(config('services.messagebird.api_key'));
+    // Validate the phone number using MessageBird's lookup API
+    $response = $messageBird->lookup->read($request->phone_number);
+    if ($response->status == 'valid') {
+        return true;
     }
-
+    return false;
+    }
 }

@@ -7,12 +7,14 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Notification') }}</title>
+    <title>{{ config('app.name', 'Notification Web App') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" />
+    <script src="/assets/js/jquery-3.6.0.min.js"></script>
+
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -21,7 +23,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{ config('app.name', 'Notification Web App') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -66,8 +68,8 @@
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('home') }}">Home</a>
-                                    <a class="dropdown-item" href="{{ env('APP_URL','') }}/users/{{ $user_id }}">Profile Info</a>
-                                    <a class="dropdown-item" href="{{ env('APP_URL','') }}/users/{{ $user_id }}/edit">Edit Profile</a>
+                                    <a class="dropdown-item" href="{{ route('users.show',$user_id) }}">Profile Info</a>
+                                    <a class="dropdown-item" href="{{ route('users.edit',$user_id) }}">Edit Profile</a>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -81,7 +83,7 @@
 
                                 </div>
                             </li>
-                            <li class="nav-item"><a  href="{{route('notifications.index') }}" style="position: relative;">
+                            <li class="nav-item"><a  href="{{route('notifications.me') }}" style="position: relative;">
 
                               <img src="/assets/images/message.png" alt="Notification" width="36px" height="36px" style="position: relative;">
                               <div class="fs-4" style="position: absolute;top: -15px;right: -6px;font-weight: bold; color: #781a1a;">

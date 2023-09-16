@@ -34,13 +34,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::post('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-    Route::get('/notifications/me', [NotificationController::class, 'me'])->name('notifications.me');
-    Route::get('/notifications/create', [NotificationController::class, 'create'])->name('notifications.create');
     Route::get('/notifications/{notification}', [NotificationController::class, 'show'])->name('notifications.show');
-    Route::post('/notifications', [NotificationController::class, 'store'])->name('notifications.store');
+
 });
 
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/notifications/edit/{notification}',[NotificationController::class, 'edit'])->name('notifications.edit');
-    Route::put('/notifications/{notification}', [NotificationController::class, 'update'])->name('notifications.update');
-});
